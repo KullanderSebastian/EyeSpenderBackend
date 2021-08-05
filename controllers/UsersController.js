@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import hashPassword from "./helpers/hashPassword.js";
 import comparePasswords from "./helpers/comparePasswords.js";
+import generateJWT from "../middlewares/generateJWT.js";
 
 class UsersController {
     async signup(req, res) {
@@ -50,6 +51,19 @@ class UsersController {
 
             const isValid = await comparePasswords(req.body.password, user.password);
 
+            const { error, token } = await generateJWT(user.username);
+
+            if (error) {
+                return res.status(500).json({
+                    error: true,
+                    message: "Couldn't create access token. Please try again later",
+                });
+            }
+
+            user.accessToken = token;
+
+            await user.save();
+
             if (!isValid) {
                 return res.status(400).json({
                     error: true,
@@ -67,6 +81,30 @@ class UsersController {
             return res.status(500).json({
                 error: true,
                 message: "Couldn't login. Please try again",
+            });
+        }
+    }
+
+    async logout(req, res) {
+        try {
+            const { username } = req.decoded;
+
+            let user = await User.findOne({ username });
+
+            user.accessToken = "";
+
+            await user.save();
+
+            return res.status(200).json({
+                success: true,
+                message: "User logged out",
+            });
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error,
             });
         }
     }
