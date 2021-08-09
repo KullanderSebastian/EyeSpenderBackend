@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors';
 import dotenv from "dotenv";
 import router from "./routes/router.js";
 import usersRouter from "./routes/usersRouter.js";
@@ -22,6 +23,7 @@ mongoose
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors());
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
