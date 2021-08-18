@@ -13,4 +13,6 @@ usersRouter.patch("/login", cleanBody, users.login);
 
 usersRouter.patch("/logout", validateToken, users.logout);
 
+usersRouter.post("/checktoken", validateToken, users.checkToken);
+
 export default usersRouter;

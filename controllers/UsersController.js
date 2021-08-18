@@ -13,6 +13,7 @@ class UsersController {
             if (user) {
                 return res.status(400).json({
                     error: true,
+                    status: 400,
                     message: "Username is already in use",
                 });
             }
@@ -33,6 +34,7 @@ class UsersController {
 
             return res.status(500).json({
                 error: true,
+                status: 500,
                 message: "Cannot sign up",
             });
         }
@@ -74,6 +76,7 @@ class UsersController {
             return res.status(200).send({
                 success: true,
                 message: "User logged in successfully",
+                token: token,
             });
         } catch (error) {
             console.error(error);
@@ -107,6 +110,13 @@ class UsersController {
                 message: error,
             });
         }
+    }
+
+    async checkToken(req, res) {
+        return res.status(200).json({
+            error: false,
+            message: "Token is valid",
+        });
     }
 }
 
