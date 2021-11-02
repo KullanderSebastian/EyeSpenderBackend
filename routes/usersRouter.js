@@ -15,4 +15,6 @@ usersRouter.patch("/logout", validateToken, users.logout);
 
 usersRouter.post("/checktoken", validateToken, users.checkToken);
 
+usersRouter.patch("/getuserid", users.getUserId);
+
 export default usersRouter;

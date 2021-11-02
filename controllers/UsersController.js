@@ -118,6 +118,26 @@ class UsersController {
             message: "Token is valid",
         });
     }
+
+    async getUserId(req, res) {
+        try {
+            let user = await User.findOne({
+                username: req.body.username,
+            });
+
+            return res.status(200).send({
+                success: true,
+                data: user._id
+            });
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error,
+            });
+        }
+    }
 }
 
 export default UsersController;
