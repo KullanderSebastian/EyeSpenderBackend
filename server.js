@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from "dotenv";
 import router from "./routes/router.js";
 import usersRouter from "./routes/usersRouter.js";
+import financeRouter from "./routes/financeRouter.js";
 import mongoose from "mongoose";
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", router);
 app.use("/users", usersRouter);
+app.use("/finances", financeRouter);
 
 app.listen(port, () => {
     console.log("Listening on port: " + port);
