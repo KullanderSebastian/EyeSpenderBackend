@@ -138,6 +138,26 @@ class UsersController {
             });
         }
     }
+
+    async getUserSetupStatus(req, res) {
+        try {
+            let status = await User.findOne({
+                username: req.body.username,
+            });
+
+            return res.status(200).send({
+                success: true,
+                data: status.hasSetupFinances
+            });
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error
+            });
+        }
+    }
 }
 
 export default UsersController;

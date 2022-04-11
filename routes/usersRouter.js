@@ -17,4 +17,6 @@ usersRouter.post("/checktoken", validateToken, users.checkToken);
 
 usersRouter.patch("/getuserid", users.getUserId);
 
+usersRouter.patch("/getusersetupstatus", users.getUserSetupStatus);
+
 export default usersRouter;
