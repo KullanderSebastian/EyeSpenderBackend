@@ -9,4 +9,6 @@ const finance = new FinanceController();
 
 financeRouter.post("/savefinances", cleanBody, finance.saveFinances);
 
+financeRouter.patch("/getfinances", cleanBody, finance.getFinances);
+
 export default financeRouter;
