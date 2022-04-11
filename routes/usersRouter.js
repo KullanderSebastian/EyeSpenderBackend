@@ -19,4 +19,6 @@ usersRouter.patch("/getuserid", users.getUserId);
 
 usersRouter.patch("/getusersetupstatus", users.getUserSetupStatus);
 
+usersRouter.post("/updateusersetupstatus", users.updateUserSetupStatus);
+
 export default usersRouter;

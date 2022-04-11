@@ -158,6 +158,26 @@ class UsersController {
             });
         }
     }
+
+    async updateUserSetupStatus(req, res) {
+        try {
+            let user = await User.findOneAndUpdate({
+                username: req.body.username
+            },
+            {
+                hasSetupFinances: true
+            });
+
+            return res.status(200).send(user);
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error
+            });
+        }
+    }
 }
 
 export default UsersController;
