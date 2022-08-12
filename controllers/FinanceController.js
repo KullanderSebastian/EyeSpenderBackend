@@ -21,6 +21,27 @@ class FinanceController {
         }
     }
 
+    async updateFinances(req, res) {
+        try {
+            let finance = await Finance.findOneAndUpdate({
+                userid: req.body.userId,
+                "spendings.title": req.body.title
+            },
+            {
+                "spendings.$.amount": req.body.newAmount
+            });
+
+            return res.status(200).send(finance);
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error
+            });
+        }
+    }
+
     async getFinances(req, res) {
         try {
             let finance = await Finance.findOne({

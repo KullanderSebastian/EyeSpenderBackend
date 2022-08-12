@@ -21,4 +21,6 @@ usersRouter.patch("/getusersetupstatus", users.getUserSetupStatus);
 
 usersRouter.post("/updateusersetupstatus", users.updateUserSetupStatus);
 
+usersRouter.post("/changepassword", users.changePassword);
+
 export default usersRouter;

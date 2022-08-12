@@ -178,6 +178,50 @@ class UsersController {
             });
         }
     }
+
+    async changePassword(req, res) {
+        try {
+            let user = await User.findOne({
+                username: req.body.username,
+            });
+
+            console.log(req.body.username);
+            console.log(req.body.password);
+            console.log(req.body.newPassword);
+            console.log(req.body.newPasswordCheck);
+
+            const isValid = await comparePasswords(req.body.password, user.password);
+
+            if (!isValid) {
+                return res.status(400).json({
+                    error: true,
+                    message: "Invalid password",
+                });
+            }
+
+            if (req.body.newPassword != req.body.newPasswordCheck) {
+                return res.status(404).json({
+                    error: true,
+                    message: "Passwords do not match"
+                });
+            }
+
+            const hashedPassword = await hashPassword(req.body.newPassword);
+
+            user.password = hashedPassword;
+
+            await user.save();
+
+            return res.status(201).send(user);
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error
+            });
+        }
+    }
 }
 
 export default UsersController;
