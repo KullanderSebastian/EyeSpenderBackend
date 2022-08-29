@@ -7,10 +7,8 @@ import validateToken from "../middlewares/validateToken.js";
 
 const finance = new FinanceController();
 
-financeRouter.post("/savefinances", cleanBody, finance.saveFinances);
+financeRouter.post("/savepayment", cleanBody, finance.savePayment);
 
-financeRouter.post("/updatefinances", cleanBody, finance.updateFinances);
-
-financeRouter.patch("/getfinances", cleanBody, finance.getFinances);
+financeRouter.patch("/getpayments", finance.getPayments);
 
 export default financeRouter;

@@ -1,15 +1,41 @@
 import Finance from "../models/finance.model.js";
 
 class FinanceController {
-    async saveFinances(req, res) {
+    async savePayment(req, res) {
         try {
-            let finance = req.body;
+			let finance = await Finance.findOne({
+                userId: req.body.userId,
+				month: req.body.month
+            });
 
-            const newFinance = new Finance(finance);
+			if (finance) {
+				finance.unplannedSpendings.push({
+					title: req.body.title,
+					category: req.body.category,
+					amount: req.body.amount,
+					date: req.body.date
+				});
 
-            await newFinance.save();
+				const newFinance = new Finance(finance);
+				await newFinance.save()
 
-            return res.status(201).send(finance);
+				return res.status(201).send(finance);
+			} else if (!finance) {
+				finance = new Finance();
+
+				finance.userId = req.body.userId;
+				finance.month = req.body.month;
+				finance.unplannedSpendings = [{
+					title: req.body.title,
+					category: req.body.category,
+					amount: req.body.amount,
+					date: req.body.date
+				}];
+
+				await finance.save();
+
+				return res.status(200).send(finance);
+			}
         } catch (error) {
             console.error(error);
 
@@ -21,46 +47,27 @@ class FinanceController {
         }
     }
 
-    async updateFinances(req, res) {
-        try {
-            let finance = await Finance.findOneAndUpdate({
-                userid: req.body.userId,
-                "spendings.title": req.body.title
-            },
-            {
-                "spendings.$.amount": req.body.newAmount
-            });
+	async getPayments(req, res) {
+		try {
+			let finance = await Finance.findOne({
+				userId: req.body.userId,
+				month: req.body.month
+			});
 
-            return res.status(200).send(finance);
-        } catch (error) {
-            console.error(error);
+			return res.status(200).send({
+				success: true,
+				data: finance.unplannedSpendings
+			});
+		} catch	(error) {
+			console.log(error);
 
-            return res.status(500).json({
-                error: true,
-                message: error
-            });
-        }
-    }
-
-    async getFinances(req, res) {
-        try {
-            let finance = await Finance.findOne({
-                userid: req.body.userid,
-            });
-
-            return res.status(200).send({
-                success: true,
-                data: finance
-            });
-        } catch (error) {
-            console.error(error);
-
-            return res.status(500).json({
-                error: true,
-                message: error,
-            });
-        }
-    }
+			return res.status(500).json({
+				error: true,
+				status: 500,
+				message: error,
+			});
+		}
+	}
 }
 
 export default FinanceController;

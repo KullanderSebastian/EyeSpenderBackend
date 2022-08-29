@@ -222,6 +222,90 @@ class UsersController {
             });
         }
     }
+
+	async saveUserFinances(req, res) {
+		try {
+			let user = await User.findOneAndUpdate({
+				username: req.body.username
+			},
+			{
+				salary: req.body.salary,
+				plannedSpendings: req.body.finances
+			});
+
+			return res.status(200).send(user);
+		} catch (error) {
+			console.error(error);
+
+			return res.status(500).json({
+				error: true,
+				status: 500,
+				message: "Cannot save to database",
+			});
+		}
+	}
+
+	async getUserFinances(req, res) {
+		try {
+			let user = await User.findOne({
+				username: req.body.username,
+			});
+
+			return res.status(200).send({
+				success: true,
+				data: user.plannedSpendings
+			});
+		} catch (error) {
+			console.error(error);
+
+			return res.status(500).json({
+				error: true,
+				message: error,
+			});
+		}
+	}
+
+	async getSalary(req, res) {
+		try {
+			let user = await User.findOne({
+				username: req.body.username,
+			});
+
+			return res.status(200).send({
+				success: true,
+				data: user.salary
+			});
+		} catch (error) {
+			console.error(error);
+
+			return res.status(500).json({
+				error: true,
+				message: error,
+			});
+		}
+	}
+
+	async updateUserFinances(req, res) {
+        try {
+            let user = await User.findOneAndUpdate({
+                username: req.body.username,
+                "plannedSpendings.title": req.body.title
+            },
+            {
+                "plannedSpendings.$.amount": req.body.newAmount
+            });
+
+            return res.status(200).send(user);
+        } catch (error) {
+            console.error(error);
+
+            return res.status(500).json({
+                error: true,
+                message: error
+            });
+        }
+    }
 }
+
 
 export default UsersController;

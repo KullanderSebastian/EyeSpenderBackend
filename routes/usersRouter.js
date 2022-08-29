@@ -23,4 +23,12 @@ usersRouter.post("/updateusersetupstatus", users.updateUserSetupStatus);
 
 usersRouter.post("/changepassword", users.changePassword);
 
+usersRouter.post("/saveuserfinances", users.saveUserFinances);
+
+usersRouter.patch("/getuserfinances", users.getUserFinances);
+
+usersRouter.post("/updateuserfinances", users.updateUserFinances);
+
+usersRouter.patch("/getsalary", users.getSalary);
+
 export default usersRouter;
