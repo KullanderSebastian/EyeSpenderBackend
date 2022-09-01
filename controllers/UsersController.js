@@ -47,7 +47,7 @@ class UsersController {
             if (!user) {
                 return res.status(404).json({
                     error: true,
-                    message: "Account not found",
+                    message: "Fel användarnamn/lösenord",
                 });
             }
 
@@ -58,7 +58,7 @@ class UsersController {
             if (error) {
                 return res.status(500).json({
                     error: true,
-                    message: "Couldn't create access token. Please try again later",
+                    message: "Kunde inte skapa access token, vänligen försök igen senare",
                 });
             }
 
@@ -69,7 +69,7 @@ class UsersController {
             if (!isValid) {
                 return res.status(400).json({
                     error: true,
-                    message: "Invalid password",
+                    message: "Fel användarnamn/lösenord",
                 });
             }
 
@@ -83,7 +83,7 @@ class UsersController {
 
             return res.status(500).json({
                 error: true,
-                message: "Couldn't login. Please try again",
+                message: "Kunde inte logga in, vänligen försök igen senare",
             });
         }
     }
@@ -195,14 +195,14 @@ class UsersController {
             if (!isValid) {
                 return res.status(400).json({
                     error: true,
-                    message: "Invalid password",
+                    message: "Fel lösenord",
                 });
             }
 
             if (req.body.newPassword != req.body.newPasswordCheck) {
                 return res.status(404).json({
                     error: true,
-                    message: "Passwords do not match"
+                    message: "Lösenorden överensstämmer ej"
                 });
             }
 
